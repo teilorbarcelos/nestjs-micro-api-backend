@@ -9,7 +9,7 @@ const logger = new Logger('Main');
 async function bootstrap() {
   const app = await NestFactory.createMicroservice(AppModule, {
     transport: Transport.RMQ,
-    options: { urls: [RMQ_SERVER_URL], queue: 'admin-backend' },
+    options: { urls: [RMQ_SERVER_URL], noAck: false, queue: 'admin-backend' },
   });
 
   await app.listen();
