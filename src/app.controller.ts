@@ -6,7 +6,6 @@ import {
   Payload,
   RmqContext,
 } from '@nestjs/microservices';
-import { error } from 'console';
 import { AppService } from './app.service';
 import { Category } from './interfaces/categories/category.interface';
 
@@ -23,17 +22,17 @@ export class AppController {
     const channel = ctx.getChannelRef();
     const originalMessage = ctx.getMessage();
     this.logger.log(`category: ${JSON.stringify(category)}`);
-    ackErrors.map(ackErrors => {
-      if(error.message.includes(ackErrors)) {
-        await channel.ack(originalMessage)
-      }
-    })
 
     try {
       await this.appService.createCategory(category);
       await channel.ack(originalMessage);
     } catch (error) {
-      this.logger.error(`error: ${JSON.stringify(error.message)`)
+      this.logger.error(`error: ${JSON.stringify(error.message)}'`);
+      ackErrors.map(async (ackErrors) => {
+        if (error.message.includes(ackErrors)) {
+          await channel.ack(originalMessage);
+        }
+      });
     }
   }
 
