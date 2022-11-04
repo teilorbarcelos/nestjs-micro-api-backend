@@ -28,11 +28,17 @@ export class AppController {
       await channel.ack(originalMessage);
     } catch (error) {
       this.logger.error(`error: ${JSON.stringify(error.message)}'`);
-      ackErrors.map(async (ackErrors) => {
-        if (error.message.includes(ackErrors)) {
-          await channel.ack(originalMessage);
-        }
-      });
+      // ackErrors.map(async (ackErrors) => {
+      //   if (error.message.includes(ackErrors)) {
+      //     await channel.ack(originalMessage);
+      //   }
+      // });
+
+      const filterAckError = ackErrors.filter((ackError) =>
+        error.message.includes(ackError),
+      );
+
+      if (filterAckError) await channel.ack(originalMessage);
     }
   }
 
