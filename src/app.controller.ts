@@ -43,8 +43,14 @@ export class AppController {
   }
 
   @MessagePattern('get-category')
-  async getCategies(@Payload() categoryId: string) {
-    if (categoryId) return this.appService.getCategoryById(categoryId);
-    return this.appService.getCategories();
+  async getCategies(@Payload() categoryId: string, @Ctx() ctx: RmqContext) {
+    const channel = ctx.getChannelRef();
+    const originalMessage = ctx.getMessage();
+    try {
+      if (categoryId) return this.appService.getCategoryById(categoryId);
+      return this.appService.getCategories();
+    } finally {
+      await channel.ack(originalMessage);
+    }
   }
 }
