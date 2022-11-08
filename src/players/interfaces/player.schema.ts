@@ -4,7 +4,7 @@ export const PlayerSchema = new mongoose.Schema(
   {
     email: { type: String, unique: true },
     phoneNumber: { type: String },
-    name: { type: String },
+    name: String,
     category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category' },
     ranking: String,
     rankingPosition: Number,

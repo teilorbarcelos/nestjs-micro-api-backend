@@ -3,12 +3,12 @@ import mongoose from 'mongoose';
 export const CategorySchema = new mongoose.Schema(
   {
     category: { type: String, unique: true },
-    description: { type: String },
+    description: String,
     events: [
       {
-        name: { type: String },
-        operation: { type: String },
-        value: { type: Number },
+        name: String,
+        operation: String,
+        value: Number,
       },
     ],
   },
