@@ -1,9 +1,11 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { DB_URL } from 'env';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PlayersModule } from './players/players.module';
 import { CategoriesModule } from './categories/categories.module';
+
+const configService = new ConfigService();
+const DB_URL = configService.get<string>('DB_URL');
 
 @Module({
   imports: [
